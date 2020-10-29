@@ -35,7 +35,7 @@ export default ({ config, db }) => {
       var target_path = 'C://Project//Citation Repository//' + req.file.originalname;
       var src = fs.createReadStream(tmp_path);
       var dest = fs.createWriteStream(target_path);
-      src.pipe(dest);
+      src.pipe(dest); 
 
       let dmsUrl = "http://10.31.13.205:8080";
       let dmsUsername = "admin";
@@ -71,7 +71,8 @@ export const searchPensionWorkflow = async (dmsUrl, dmsUserName, dmsPassword) =>
   };
 
   let workflowResponse = await httpRequest({
-    hostURL: 'http://10.31.13.205:3000/',
+  //  hostURL: 'http://10.31.13.205:3000/',
+   hostURL: 'http://localhost:3000/',
     endPoint: 'dmsApi/loginToDms',
     requestBody: requestBody
   });
@@ -89,7 +90,8 @@ export const uploadDocument = async (dmsTkt, filePathToUpload) => {
   };
 
   let workflowResponse = await httpRequest({
-    hostURL: 'http://10.31.13.205:3000/',
+   // hostURL: 'http://10.31.13.205:3000/',
+   hostURL: 'http://localhost:3000/',
     endPoint: 'dmsApi/uploadFile',
     requestBody: requestBody
   });
