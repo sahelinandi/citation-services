@@ -32,7 +32,34 @@ export default ({ config, db }) => {
       console.log(req.file);
       let successStatus = false;
       var tmp_path = req.file.path;
-      var target_path = 'C://Project//Citation Repository//' + req.file.originalname;
+      console.log("req.file.originalname"+ req.file.originalname);
+      var filename = req.file.originalname;
+      var fileNameStr= filename.substring(0,filename.indexOf('.')); 
+      console.log("file name str==>"+fileNameStr);
+      var fileExt = filename.substring(filename.indexOf('.')); 
+      console.log("file fileExt str==>"+fileExt);
+     // var target_path = 'C://Project//Citation Repository//' + req.file.originalname;
+     let date_ob = new Date();
+
+     // current date
+     // adjust 0 before single digit date
+     let date = ("0" + date_ob.getDate()).slice(-2);
+     
+     // current month
+     let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
+     
+     // current year
+     let year = date_ob.getFullYear();
+     
+     // current hours
+     let hours = date_ob.getHours();
+     
+     // current minutes
+     let minutes = date_ob.getMinutes();
+     
+     // current seconds
+     let seconds = date_ob.getSeconds();
+     var target_path = 'C://Project//Citation Repository//' + fileNameStr +"-" +year + "-" + month + "-" + date +"T"+  hours + " " + minutes + " " + seconds + fileExt
       var src = fs.createReadStream(tmp_path);
       var dest = fs.createWriteStream(target_path);
       src.pipe(dest); 
@@ -82,10 +109,31 @@ export const searchPensionWorkflow = async (dmsUrl, dmsUserName, dmsPassword) =>
 };
 
 export const uploadDocument = async (dmsTkt, filePathToUpload) => {
+  let date_ob = new Date();
+
+// current date
+// adjust 0 before single digit date
+let date = ("0" + date_ob.getDate()).slice(-2);
+
+// current month
+let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
+
+// current year
+let year = date_ob.getFullYear();
+
+// current hours
+//let hours = date_ob.getHours();
+
+// current minutes
+//let minutes = date_ob.getMinutes();
+
+// current seconds
+//let seconds = date_ob.getSeconds();
+
 
   let requestBody = {
     ticket: dmsTkt,
-    uploadPath: 'Test',
+    uploadPath: 'Test/'+year + "-" + month + "-" + date ,//+ "-" + hours ,//+ ":" + minutes + ":" + seconds,
     filePathToUpload: filePathToUpload
   };
 

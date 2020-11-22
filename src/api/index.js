@@ -15,7 +15,7 @@ import getSubSBU from "./getSubSBU";
 import getProjectType from "./getProjectType";
 import saveProject from "./saveProject";
 import getProjects from "./getProjects";
-
+import getDocuments from "./getDocuments";
 export default ({ config, db }) => {
   let api = Router();
 
@@ -34,6 +34,7 @@ export default ({ config, db }) => {
   api.use("/citation-services/v1", getProjectType({ config, db }));
   api.use("/citation-services/v1", saveProject({ config, db }));
   api.use("/citation-services/v1", getProjects({ config, db }));
+  api.use("/citation-services/v1", getDocuments({ config, db }));
   // perhaps expose some API metadata at the root
   api.get("/", (req, res) => {
     res.json({ version });

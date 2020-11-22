@@ -21,11 +21,43 @@ export default ({ config, db }) => {
       let successStatus = false;
 
       let projectName = request.body.data[0].projectName;
+      let clientName = request.body.data[0].clientName;
+      let startDate = request.body.data[0].startDate;
+      let endDate = request.body.data[0].endDate;
+      let projectValueFrom = request.body.data[0].projectValueFrom;
+      let projectValueTo = request.body.data[0].projectValueTo;
+      let region =  request.body.data[0].region;
 
-      let text = "SELECT p.project_id, p.project_name, p.client_name, p.project_start_date, p.project_end_date from tbl_project p where p.active = true and p.project_name = '"+ projectName+"'";
-
+    //  let text = "SELECT p.project_id, p.project_name, p.client_name, p.project_start_date, p.project_end_date from tbl_project p where p.active = true and p.project_name = '"+ projectName+"'";
+    let text = "SELECT p.project_id, p.project_name, p.client_name,to_char(p.project_start_date,'dd/mm/yyyy')project_start_date, to_char(p.project_end_date,'dd/mm/yyyy')project_end_date,p.project_value,(select m.description	from tbl_master_data_value m	where m.key_id = 4 and m.value_id = p.currency_id) currency,(select m.description from tbl_master_data_value m where	m.key_id = 2 and m.value_id = P.region_id ) region,	(select tc.name from tbl_country tc where	tc.country_id = P.country_id ) country ,(select tfa.name from tbl_funding_agency tfa where tfa.funding_agency_id = p.funding_agency_id ) funding_agency,(select	tpt.name from	tbl_project_type tpt where	tpt.project_type_id = p.project_type_id ) project_type,p.is_network_firm_opportunity,p.pwc_india_value,(select	tss.name from	tbl_sub_sbu tss where	tss.sub_sbu_id = p.sub_sbu_id ) sub_sbu_name from tbl_project p  where p.active = true and p.project_name like '%"+ projectName+"%'";
+    
+    if(clientName!=null && !clientName=="")
+    {
+      text = text + "and  p.client_name like '%"+clientName+"%'";
+    }
+    if(startDate!=null && !startDate=="")
+    {
+      text = text + "and  p.project_start_date >= '"+startDate+"'";
+    }
+    if(endDate!=null && !endDate=="")
+    {
+      text = text + "and  p.project_end_date <= '"+endDate+"'";
+    }
+    if(projectValueFrom!=null && !projectValueFrom=="")
+    {
+      text = text + "and  p.project_value >= '"+projectValueFrom+"'";
+    }
+    if(projectValueTo!=null && !projectValueTo=="")
+    {
+      text = text + "and  p.project_value <= '"+projectValueTo+"'";
+    }
+    if(region!=null && !region=="")
+    {
+      text = text + "and  p.region_id <= '"+region+"'";
+    }
 
       let sqlQuery = text;
+      console.log("sqlQuery"+sqlQuery);
       /* if (gender != null) {
         sqlQuery = sqlQuery + " join tbl_master_data_value mdv on mdv.value_id = a.gender join tbl_master_data_key mdk on mdk.key_id = mdv.key_id and mdk.Key_code = 'GENDER' and mdv.value_code='GENDER_" + gender + "'";
 

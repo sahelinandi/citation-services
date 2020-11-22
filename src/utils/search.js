@@ -191,5 +191,39 @@ const projectDataRowMapper = async (row, mapper = {}) => {
   projectData.clientName = row.client_name;
   projectData.projectStartDate = row.project_start_date; 
   projectData.projectEndDate = row.project_end_date; 
+  projectData.projectValue = row.project_value; 
+  projectData.currency = row.currency;
+  projectData.region = row.region;
+  projectData.country = row.country;
+  projectData.funding_agency = row.funding_agency;
+  projectData.projectType = row.project_type;
+  projectData.isNetworkFirmOpportunity = row.is_network_firm_opportunity;
+  projectData.pwcIndiaValue = row.pwc_india_value;
+  projectData.subSbuName = row.sub_sbu_name;
+ /* projectData.nodeId =row.node_id;
+  projectData.documentId =row.document_id;
+  projectData.documentName =row.document_name;
+  projectData.documentType =row.document_type;*/
   return projectData;
+
+};
+
+export const mergeDocumentResults = async (response, query = {}, reqInfo) => {
+  requestInfo = reqInfo;
+  let result = [];
+  for (var i = 0; i < response.length; i++) {
+    let documents = {};        
+    documents = await documentRowMapper(response[i]);
+    result.push(documents);
+  }  
+  return result;
+};
+
+const documentRowMapper = async (row, mapper = {}) => {
+  let documents = isEmpty(mapper) ? {} : mapper;
+  documents.nodeId =row.node_id;
+  documents.documentId = row.document_id; 
+  documents.documentName = row.document_name; 
+  documents.documentType = row.document_type;
+  return documents;
 };

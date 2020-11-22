@@ -29,8 +29,8 @@ export default ({ config, db }) => {
   api.post(
     "/downloadFile", type,
     asyncHandler(async (req, res, next) => {
-
-      const file = 'C://Project//Citation Repository//SSO-Login-Failed.png';
+      //console.log("download file name==>"+res.file_name);
+      const target_path = 'C://Project//Citation Repository//Download';
       //res.download(file);
 
       /* var filename = path.basename(file);
@@ -41,6 +41,20 @@ export default ({ config, db }) => {
 
       
       //filestream.pipe(res);
+      console.log("nodeid::"+ req.body.nodeid);
+      let nodeId = req.body.nodeid;
+      let dmsUrl = "http://10.31.13.205:8080";
+      let dmsUsername = "admin";
+      let dmsPassword = "RMS@123";
+      let workflowSearchResponse = await searchPensionWorkflow(dmsUrl, dmsUsername, dmsPassword);
+
+      let dmsTkt = workflowSearchResponse.ticket;
+
+      let uploadResponse = await downloadDocument(dmsTkt, nodeId, target_path);
+
+        const file = target_path + "/" + uploadResponse.file_name;//let dmsNodeId = uploadResponse.message.entry.id;
+
+
 
       var filestream = fs.readFileSync(file);
       res.json({ filestream : filestream.toString('base64')});
@@ -48,7 +62,7 @@ export default ({ config, db }) => {
 
 
 
-
+                         
 
     })
   );
@@ -72,16 +86,19 @@ export const searchPensionWorkflow = async (dmsUrl, dmsUserName, dmsPassword) =>
   return workflowResponse;
 };
 
-export const downloadDocument = async (dmsTkt, filePathToUpload) => {
+export const downloadDocument = async (dmsTkt, nodeId,downloadPath) => {
+
   let requestBody = {
     ticket: dmsTkt,
-    uploadPath: 'Test',
-    filePathToUpload: filePathToUpload
+   /* downloadPath: 'Test',
+    filePathToUpload: filePathToUpload*/
+    downloadPath: downloadPath,
+    nodeId: nodeId
   };
-
+console.log("downloadPath"+downloadPath);
   let workflowResponse = await httpRequest({
     hostURL: 'http://localhost:3000/',
-    endPoint: 'dmsApi/uploadFile',
+    endPoint: 'dmsApi/downloadFile',
     requestBody: requestBody
   });
 
