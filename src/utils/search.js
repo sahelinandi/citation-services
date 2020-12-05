@@ -200,6 +200,9 @@ const projectDataRowMapper = async (row, mapper = {}) => {
   projectData.isNetworkFirmOpportunity = row.is_network_firm_opportunity;
   projectData.pwcIndiaValue = row.pwc_india_value;
   projectData.subSbuName = row.sub_sbu_name;
+  projectData.domainName = row.domain_name;
+  projectData.architectureType  = row.architecture_type;
+  projectData.technology = row.technology;
  /* projectData.nodeId =row.node_id;
   projectData.documentId =row.document_id;
   projectData.documentName =row.document_name;
@@ -226,4 +229,60 @@ const documentRowMapper = async (row, mapper = {}) => {
   documents.documentName = row.document_name; 
   documents.documentType = row.document_type;
   return documents;
+};
+
+export const mergeTechnologyResults = async (response, query = {}, reqInfo) => {
+  requestInfo = reqInfo;
+  let result = [];
+  for (var i = 0; i < response.length; i++) {
+    let technologies = {};        
+    technologies = await technologyRowMapper(response[i]);
+    result.push(technologies);
+  }  
+  return result;
+};
+
+const technologyRowMapper = async (row, mapper = {}) => {
+  let technologies = isEmpty(mapper) ? {} : mapper;
+  technologies.technologyValueId =row.technology_value_id;
+  technologies.description = row.technlogy_desc;
+  return technologies;
+};
+export const mergeDomainResults = async (response, query = {}, reqInfo) => {
+  requestInfo = reqInfo;
+  let result = [];
+  for (var i = 0; i < response.length; i++) {
+    let domains = {};        
+    domains = await domainRowMapper(response[i]);
+    result.push(domains);
+  }  
+  return result;
+};
+
+const domainRowMapper = async (row, mapper = {}) => {
+  let domains = isEmpty(mapper) ? {} : mapper;
+  domains.domainValueId =row.domain_value_id;
+  domains.description = row.domain_desc;
+  return domains;
+};
+
+
+export const mergeClientContactResults = async (response, query = {}, reqInfo) => {
+  requestInfo = reqInfo;
+  let result = [];
+  for (var i = 0; i < response.length; i++) {
+    let clientContacts = {};        
+    clientContacts = await clientContactRowMapper(response[i]);
+    result.push(clientContacts);
+  }  
+  return result;
+};
+
+const clientContactRowMapper = async (row, mapper = {}) => {
+  let clientContacts = isEmpty(mapper) ? {} : mapper;
+  clientContacts.designation =row.designation;
+  clientContacts.personName = row.person_name;
+  clientContacts.emailid = row.emailid;
+  clientContacts.phoneno = row.phoneno;
+  return clientContacts;
 };

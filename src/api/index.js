@@ -16,6 +16,9 @@ import getProjectType from "./getProjectType";
 import saveProject from "./saveProject";
 import getProjects from "./getProjects";
 import getDocuments from "./getDocuments";
+import getClilentContacts from "./getClientContact";
+import getTechnologies from './getTechnology';
+import getDomainNames from './getDomainName';
 export default ({ config, db }) => {
   let api = Router();
 
@@ -35,6 +38,9 @@ export default ({ config, db }) => {
   api.use("/citation-services/v1", saveProject({ config, db }));
   api.use("/citation-services/v1", getProjects({ config, db }));
   api.use("/citation-services/v1", getDocuments({ config, db }));
+  api.use("/citation-services/v1",getClilentContacts({ config, db }));
+  api.use("/citation-services/v1",getTechnologies({ config, db }));
+  api.use("/citation-services/v1",getDomainNames({ config, db }));
   // perhaps expose some API metadata at the root
   api.get("/", (req, res) => {
     res.json({ version });
