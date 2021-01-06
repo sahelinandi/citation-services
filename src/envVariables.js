@@ -8,6 +8,11 @@ const envVariables = {
   DB_PORT: process.env.DB_PORT || 5432,
   DB_MAX_POOL_SIZE: process.env.DB_MAX_POOL_SIZE || "5",
 
+  // document server configuration
+  dmsUsername: process.env.dmsUsername || "admin",
+  dmsUrl: process.env.dmsUrl || "http://10.31.13.205:8080",
+  dmsPassword: process.env.dmsPassword || "RMS@123",
+  
   //server configurations
   SERVER_PORT: process.env.SERVER_PORT || "8086",
   ENCRYPTION_KEY: process.env.ENCRYPTION_KEY || "abcdefgh",

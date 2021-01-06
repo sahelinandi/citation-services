@@ -43,9 +43,12 @@ export default ({ config, db }) => {
       //filestream.pipe(res);
       console.log("nodeid::"+ req.body.nodeid);
       let nodeId = req.body.nodeid;
-      let dmsUrl = "http://10.31.13.205:8080";
+     /* let dmsUrl = "http://10.31.13.205:8080";
       let dmsUsername = "admin";
-      let dmsPassword = "RMS@123";
+      let dmsPassword = "RMS@123";*/
+      let dmsUrl = envVariables.dmsUrl;// "http://10.31.13.205:8080";
+      let dmsUsername = envVariables.dmsUsername;//"admin";
+      let dmsPassword = envVariables.dmsPassword;///"RMS@123";
       let workflowSearchResponse = await searchPensionWorkflow(dmsUrl, dmsUsername, dmsPassword);
 
       let dmsTkt = workflowSearchResponse.ticket;
@@ -57,8 +60,9 @@ export default ({ config, db }) => {
 
 
       var filestream = fs.readFileSync(file);
-      res.json({ filestream : filestream.toString('base64')});
-
+      fs.unlinkSync(file);
+      res.json({ filestream : filestream.toString('base64'),filename:uploadResponse.file_name});
+     
 
 
 

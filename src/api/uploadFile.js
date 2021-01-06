@@ -64,9 +64,9 @@ export default ({ config, db }) => {
       var dest = fs.createWriteStream(target_path);
       src.pipe(dest); 
 
-      let dmsUrl = "http://10.31.13.205:8080";
-      let dmsUsername = "admin";
-      let dmsPassword = "RMS@123";
+      let dmsUrl = envVariables.dmsUrl;// "http://10.31.13.205:8080";
+      let dmsUsername = envVariables.dmsUsername;//"admin";
+      let dmsPassword = envVariables.dmsPassword;///"RMS@123";
       let workflowSearchResponse = await searchPensionWorkflow(dmsUrl, dmsUsername, dmsPassword);
 
       let dmsTkt = workflowSearchResponse.ticket;
@@ -79,8 +79,10 @@ export default ({ config, db }) => {
         DMSNodeId: dmsNodeId,
         SuccessStatus: dmsNodeId? true : false
       };
+      fs.unlinkSync(target_path);
+      fs.unlinkSync(tmp_path);
       res.json(response);
-
+ 
 
 
 
